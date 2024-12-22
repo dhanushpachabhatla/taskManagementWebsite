@@ -19,3 +19,16 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.stroke1:hover{
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: rgb(103, 0, 0);
+    color: rgb(255, 255, 255);
+    transition: all 0.3s;
+}
+.stroke2:hover{
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: rgb(91, 0, 0);
+    color: rgb(81, 0, 0);
+    transition: all 0.3s;
+}

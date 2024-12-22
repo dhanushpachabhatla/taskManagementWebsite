@@ -1,101 +1,113 @@
+import React from "react";
 import Image from "next/image";
+// import Button from "./components/common/Button/Button";
+import Button from '@mui/material/Button';
 
-export default function Home() {
+
+
+const LandingPage = () => {
+  const features = [
+    {
+      title: "Intuitive Dashboard",
+      description:
+        "Gain a clear overview of your tasks, deadlines, and productivity metrics in a visually engaging interface.",
+      img: "/dashboard.jpg",
+    },
+    {
+      title: "Task Categorization and Filtering",
+      description:
+        "Organize tasks by categories (e.g., To Do, In Progress, Done). Filter tasks by status, priority, assignee, or due date for efficient management.",
+      img: "/cat.webp",
+    },
+    {
+      title: "Collaborative Workspaces",
+      description:
+        "Seamlessly collaborate with teammates, share updates, and track progress in real-time within shared workspaces.",
+      img: "/collab.jpeg",
+    },
+    {
+      title: "Session Management and Security",
+      description:
+        "Robust user session management ensures proper access control and protects sensitive task data from unauthorized users.",
+      img: "/secure.jpg",
+    },
+  ];
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="bg-black text-white">
+          <div
+      className="flex flex-col items-center justify-center text-center text-white h-screen bg-cover bg-center"
+      style={{ backgroundImage: 'url("/back-1.jpg")' }}
+    >
+      
+      {/* navigation bar for landing page */}
+              <nav className="fixed top-0 left-0 w-full bg-black bg-opacity-85 flex items-center gap-12 p-4 h-20">
+                <Image src="/logo.png" alt="Logo" width={50} height={50} className="rounded-lg ml-12" />
+                <h1 className="text-2xl font-bold">TaskMaster</h1>
+                <div className="flex-grow flex justify-end gap-8  text-white pr-10">
+                  <a href="/login" className="hover:text-red-600 hover:text-base">
+                  Login
+                  </a>
+                  <a href="/signup" className="hover:text-red-600 hover:text-base">
+                  SignUp
+                  </a>
+                  {/* <a href="/login" className="hover:text-red-600 hover:text-base">
+                  <Button color="bg-red-400" text="Login"/>
+                  </a>
+                  <a href="/login" className="hover:text-red-600 hover:text-base">
+                  <Button color="bg-red-400" text="SignUp"/>
+                  </a> */}
+                </div>
+              </nav>
+              
+      {/* content */}
+      {/* <h1 className="stro" >hi</h1> */}
+      <h4 className="stroke2 text-2xl font-semibold transition duration-1000">Organize. Prioritize. Achieve with ease.</h4>
+      <h1 className=" stroke1 text-4xl md:text-6xl font-bold  transition duration-2000 mx-auto w-3/4 pt-10">
+      Effortlessly organize, prioritize, and achieve your goals with our intuitive task management solution designed for productivity and simplicity.
+      </h1>
+      
+      <a href="/login">
+      {/* <Button color="bg-red-500" text="Get started" /> */}
+      <Button
+  variant="contained"
+  sx={{
+    marginTop: '2rem', // Equivalent to Tailwind's mt-8
+    backgroundColor: 'red',
+    color: 'white',
+    '&:hover': { backgroundColor: 'purple' },
+  }}
+>
+  Get started
+</Button>
+      </a>
+      
+    </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <section  id="features" className="py-16 bg-black text-white">
+      <h1 className="text-4xl font-bold text-center mb-12">Key Features</h1>
+      <div className="flex flex-wrap justify-center gap-10">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className="flex gap-3 flex-wrap flex-col min-w-96 w-1/4  items-center text-center border border-white/30 rounded-2xl p-5 hover:border-white hover:bg-white/10 transition duration-300"
           >
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src={feature.img}
+              alt={feature.title}
+              width={400}
+              height={200}
+              className="rounded-lg mb-5"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <h2 className="text-2xl font-semibold mb-2">{feature.title}</h2>
+            <p className="text-lg ">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
     </div>
+    
   );
-}
+};
+
+export default LandingPage;
+
