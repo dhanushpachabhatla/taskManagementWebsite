@@ -71,7 +71,7 @@ const LandingPage = () => {
       <Button
   variant="contained"
   sx={{
-    marginTop: '2rem', // Equivalent to Tailwind's mt-8
+    marginTop: '2rem', 
     backgroundColor: 'red',
     color: 'white',
     '&:hover': { backgroundColor: 'purple' },

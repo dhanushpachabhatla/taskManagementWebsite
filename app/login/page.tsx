@@ -6,7 +6,7 @@ import { login } from '../firebase/auth';
 import Image from 'next/image';
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
-    // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
     const [password, setPassword] = useState<string>('');
     const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -20,7 +20,6 @@ const Login: React.FC = () => {
             try {
                 await login(email, password);
                 localStorage.setItem("isLoggedIn", "true"); 
-                // setIsLoggedIn(true);
                 router.push('/dashboard'); 
             } catch (error) {
                 setErrorMessage('Login failed. Please check your credentials.');
