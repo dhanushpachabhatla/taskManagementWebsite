@@ -1,7 +1,11 @@
+"use client"
 import React from 'react'
+import { useState,useEffect,useRef } from 'react';
 import SplitscreenIcon from '@mui/icons-material/Splitscreen';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircleIcon from '@mui/icons-material/Circle';
+import Tooltip from '@mui/material/Tooltip';
+import AddIcon from '@mui/icons-material/Add';
 
 type Task = {
     id: number;
@@ -17,10 +21,44 @@ type Task = {
 
 type Props = {
     task:Task;
+    onUpdateTask: (updatedTask: Task) => void;
+    onDeleteTask: (taskId: number) => void;
 }
 
-const AssignedTaskCard = ({task}: Props) => {
+const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
+    const [showEdit, setShowEdit] = useState(false);
+    const [showEditWindow, setShowEditWindow] = useState(false);
+    const menuRef = useRef<HTMLDivElement | null>(null);
+    const [editedTask, setEditedTask] = useState(task);
+    
+    const handleEditToggle = () => {
+        setShowEdit((prev) => !prev);
+    };
+    
+    const handleClickOutside = (event: MouseEvent) => {
+        if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            setShowEdit(false);
+        }
+    };
+    
+
+    const handleDeleteButton = () => {
+        onDeleteTask(task.id);
+    };
+
+    const handleSubmitEdit = () => {
+        onUpdateTask(editedTask);
+        setShowEditWindow(false);
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return (
+    <>
     <div className='size-96   rounded-lg gap-2  flex flex-col justify-between bg-slate-300 dark:bg-zinc-800 p-3 border-[4px] border-transparent hover:border-blue-800 dark:hover:border-slate-300'>
         {/* Project icon and title */}
         <div className='flex gap-4 justify-around '>
@@ -48,24 +86,38 @@ const AssignedTaskCard = ({task}: Props) => {
                     </span>
             </div>
             {/* more icon */}
-            <div className='items-center flex'>
-                <MoreVertIcon sx={{fontSize:"30px"}} className='text-slate-800 dark:text-slate-100'/>
+            <div className='relative items-center flex'>
+            <Tooltip title={"Edit"}>
+                    <MoreVertIcon onClick={handleEditToggle} sx={{ fontSize: '30px' }} className="text-slate-800 dark:text-slate-100" />
+                    </Tooltip>
+                    {showEdit && (
+                        <div
+                        ref={menuRef}
+                        className="absolute top-8 right-0 bg-blue-800 dark:bg-slate-200  text-slate-300 dark:text-blue-800 rounded-md flex flex-col shadow-lg z-10"
+                        >
+                            <button onClick={()=>{setShowEditWindow(true)}} className="font-semibold border-b-2 pb-2 px-4 hover:text-blue-800 hover:bg-slate-300 hover:dark:bg-blue-800 hover:dark:text-neutral-300">
+                                Edit
+                            </button>
+                            <button onClick={handleDeleteButton} className="font-semibold pt-1 px-4 hover:text-blue-800 hover:bg-slate-300 hover:dark:bg-blue-800 hover:dark:text-neutral-300">
+                                Delete
+                            </button>
+                        </div>
+                    )}
             </div>
         </div>
         
         {/* sub tasks */}
-        <ul>
-            {
-                task.subtasks.map((subtask,index) => (
-
-            <li key={index} className='flex gap-2 items-center' >
-                <CircleIcon sx={{fontSize:"9px"}} className='text-slate-700 dark:text-slate-400'/>  
-                <span className='text-slate-600 dark:text-slate-100'>{subtask}</span>
-            </li>
-                ))
-            }
-
-        </ul>
+        { task.subtasks.length > 0 ?<ul>
+                {task.subtasks.map((subtask, index) => (
+                    <li key={index} className="flex gap-2 items-center">
+                        <CircleIcon sx={{ fontSize: '9px' }} className="text-slate-700 dark:text-slate-400" />
+                        <span className="text-slate-600 dark:text-slate-100">{subtask}</span>
+                    </li>
+                ))}
+            </ul>  : <h1 className=' flex gap-3 items-center  text-blue-600 dark:text-slate-300 w-60 font-sans font-bold bg-blue-700 rounded-lg p-1 m-1 text-lg '>
+            <CircleIcon sx={{ fontSize: '9px' }} className="text-slate-700 dark:text-slate-400 ml-1 items-center" />
+            <span className="text-slate-600 dark:text-slate-100">No SubTasks</span> </h1>}
+            
         <div className='flex flex-col text-sm mt-2'>
             <span className='font-mono text-yellow-600 font-bold'>
             Assigned from :
@@ -99,6 +151,53 @@ const AssignedTaskCard = ({task}: Props) => {
         </div>
         </div>
     </div>
+            {/* Edit Window */}
+            {showEditWindow && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="bg-white dark:bg-neutral-900 rounded-lg p-5 w-96">
+            <h2 className="text-lg font-bold text-blue-800 dark:text-slate-100">
+                Edit Task
+            </h2>
+            <div className="mt-4">
+                <div>
+                    <label className="block text-sm text-slate-700 dark:text-slate-300">Progress</label>
+                    <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={editedTask.progress}
+                        onChange={(e) => setEditedTask({ ...editedTask, progress: parseInt(e.target.value) })}
+                        className="w-full p-2 mb-2 rounded border text-neutral-800"
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm text-slate-700 dark:text-slate-300">Due Date</label>
+                    <input
+                        type="date"
+                        value={editedTask.dueDate}
+                        onChange={(e) => setEditedTask({ ...editedTask, dueDate: e.target.value })}
+                        className="w-full p-2 mb-2 rounded border text-neutral-800"
+                    />
+                </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-4">
+                <button
+                    className="bg-gray-300 dark:bg-neutral-700 text-gray-800 dark:text-white rounded px-4 py-2"
+                    onClick={() => setShowEditWindow(false)}
+                >
+                    Cancel
+                </button>
+                <button
+                    className="bg-blue-800 text-white rounded px-4 py-2"
+                    onClick={handleSubmitEdit}
+                >
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+)}
+    </>
   )
 }
 

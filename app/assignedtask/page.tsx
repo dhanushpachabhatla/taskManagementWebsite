@@ -74,6 +74,13 @@ function AssignedTaskPage() {
       setTasks((prevTasks) => [newTask, ...prevTasks]);
     };
     
+    const onUpdateTask = () =>{
+     
+    }
+    const onDeleteTask = () =>{
+      
+    }
+    
     const filteredTasks = tasks.filter((task) => {
       if (!category) return true;
       if (category === 'ToDo') return task.progress === 0;
@@ -114,7 +121,7 @@ function AssignedTaskPage() {
     </div>
         <div className='overflow-auto flex gap-10 flex-wrap justify-center mt-7'>
         {sortedTasks.length > 0 ? (
-          sortedTasks.map((task) =><AssignedTaskCard  key={task.id} task={task}/>)
+          sortedTasks.map((task) =><AssignedTaskCard  onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} key={task.id} task={task}/>)
         ) : (
           <p className="text-neutral-500 dark:text-neutral-300 text-6xl font-bold mt-36">
             No Tasks Made !

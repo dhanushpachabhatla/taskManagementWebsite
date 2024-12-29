@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StatsRightSideBar from '../components/common/StatsRightSideBar/StatsRightSideBar';
 import ProjectCard from '../components/common/ProjectCard/ProjectCard';
 import SearchBar from '../components/common/SeachBar/SearchBar';
@@ -68,10 +68,18 @@ function Dashboard() {
   const [tasks, setTasks] = useState(initialTasks);
   const [category, setCategory] = useState('');
   const [sortBy, setSortBy] = useState('');
-
+  const [searchValue, setsearchValue] = useState('');
   const handleAddTask = (newTask: Task) => {
     setTasks((prevTasks) => [newTask, ...prevTasks]);
   };
+  
+  const onUpdateTask = () =>{
+    
+  }
+  const onDeleteTask = () =>{
+    
+  }
+  
   
   const filteredTasks = tasks.filter((task) => {
     if (!category) return true;
@@ -98,10 +106,11 @@ const sortedTasks = priorityFilteredTasks.sort((a, b) => {
     }
     return 0; 
 });
-const RecentTasks = tasks.sort((a, b) => {
-    return new Date(b.created).getTime() - new Date(a.created).getTime(); // Most recently created first
-});
-
+//apply searching
+const searchTasks = sortedTasks.filter(
+  (task) =>
+    task.title.toLowerCase().includes(searchValue.trim().toLowerCase())
+);
   
   
   return (
@@ -111,7 +120,7 @@ const RecentTasks = tasks.sort((a, b) => {
     >
       <div className="w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0">
         <div className="flex justify-between">
-          <SearchBar />
+          <SearchBar search={setsearchValue}  />
           <AddProject onAddTask={handleAddTask} />
         </div>
         <div className="mt-16 flex justify-between font-bold items-center">
@@ -119,8 +128,8 @@ const RecentTasks = tasks.sort((a, b) => {
           <SortByButton onCategoryChange={setCategory} onSortByChange={setSortBy} />
         </div>
         <div className="overflow-auto flex gap-10 flex-wrap justify-center mt-7">
-        {sortedTasks.length > 0 ? (
-          sortedTasks.map((task) => <ProjectCard key={task.id} task={task} />)
+        {searchTasks.length > 0 ? (
+          searchTasks.map((task) => <ProjectCard onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} key={task.id} task={task} />)
         ) : (
           <p className="text-neutral-500 dark:text-neutral-300 text-6xl font-bold mt-36">
             No Tasks Made !

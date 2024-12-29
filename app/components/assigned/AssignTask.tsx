@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type AssignTaskButtonProps = {
     onAddTask: (newTask: any) => void;
@@ -13,7 +14,7 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
         priority: "low",
         assignedTo: "",
         assignedBy: "",
-        subtasks: ["", "", ""],
+        subtasks: [""], // Initialize with one subtask field
     });
 
     const handleInputChange = (
@@ -26,6 +27,20 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
     const handleSubtaskChange = (index: number, value: string) => {
         const updatedSubtasks = [...taskData.subtasks];
         updatedSubtasks[index] = value;
+        setTaskData({ ...taskData, subtasks: updatedSubtasks });
+    };
+
+    const handleAddSubtask = () => {
+        if (taskData.subtasks.length < 3) {
+            setTaskData({
+                ...taskData,
+                subtasks: [...taskData.subtasks, ""],
+            });
+        }
+    };
+
+    const handleRemoveSubtask = (index: number) => {
+        const updatedSubtasks = taskData.subtasks.filter((_, i) => i !== index);
         setTaskData({ ...taskData, subtasks: updatedSubtasks });
     };
 
@@ -49,26 +64,11 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
                 priority: "low",
                 assignedTo: "",
                 assignedBy: "",
-                subtasks: ["", "", ""],
+                subtasks: [""],
             });
             setIsModalOpen(false);
-        }
-        else {
-            if (!taskData.title) {
-                alert('Please fill the Title');
-            }
-            else if (!taskData.dueDate) {
-                alert('Please fill the Due Date');
-            }
-            else if (!taskData.priority) {
-                alert('Please fill the Priority');
-            }
-            else if (!taskData.assignedBy) {
-                alert('Please fill the assignedBy');
-            }
-            else if (!taskData.assignedTo) {
-                alert('Please fill the assignedTo');
-            }
+        } else {
+            alert('Please fill all required fields.');
         }
     };
 
@@ -106,13 +106,13 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
                             <input
                                 type="text"
                                 value={taskData.assignedTo}
-                                placeholder="assign to"
+                                placeholder="Assign to"
                                 onChange={(e) => handleInputChange(e, "assignedTo")}
                                 className="w-full p-2 mb-2 rounded border text-neutral-800"
                             />
                             <input
                                 type="text"
-                                placeholder="assign from"
+                                placeholder="Assign from"
                                 value={taskData.assignedBy}
                                 onChange={(e) => handleInputChange(e, "assignedBy")}
                                 className="w-full p-2 mb-2 rounded border text-neutral-800"
@@ -120,22 +120,39 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
                             <select
                                 value={taskData.priority}
                                 onChange={(e) => handleInputChange(e, "priority")}
-                                className="w-full p-2 mb-2 rounded border text-neutral-800 "
+                                className="w-full p-2 mb-2 rounded border text-neutral-800"
                             >
                                 <option value="low">Low</option>
                                 <option value="med">Medium</option>
                                 <option value="high">High</option>
                             </select>
-                            {[...Array(3)].map((_, index) => (
-                                <input
-                                    key={index}
-                                    type="text"
-                                    placeholder={`Subtask ${index + 1}`}
-                                    value={taskData.subtasks[index]}
-                                    onChange={(e) => handleSubtaskChange(index, e.target.value)}
-                                    className="w-full p-2 mb-2 rounded border text-neutral-800"
-                                />
+                            {taskData.subtasks.map((subtask, index) => (
+                                <div key={index} className="flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder={`Subtask ${index + 1}`}
+                                        value={subtask}
+                                        onChange={(e) => handleSubtaskChange(index, e.target.value)}
+                                        className="w-full p-2 mb-2 rounded border text-neutral-800"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveSubtask(index)}
+                                        className="text-red-500"
+                                    >
+                                        <DeleteIcon/>
+                                    </button>
+                                </div>
                             ))}
+                            {taskData.subtasks.length < 3 && (
+                                <button
+                                    type="button"
+                                    onClick={handleAddSubtask}
+                                    className="bg-blue-800 text-white rounded px-4 py-2 mt-2"
+                                >
+                                    Add Subtask
+                                </button>
+                            )}
                         </div>
                         <div className="flex justify-end gap-2 mt-4">
                             <button

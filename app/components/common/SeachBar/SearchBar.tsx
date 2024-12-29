@@ -1,6 +1,12 @@
+"use client"
 import React from 'react'
 import SearchIcon from '@mui/icons-material/Search';
-function SearchBar() {
+import { useState } from 'react';
+function SearchBar({search}:any) {
+  // const [searchValue, setsearchValue] = useState('')
+  const HandleSearch = (e:any) =>{
+    search(e.target.value)
+  }
   return (
     <div className='flex items-center'>
         {/* icon */}
@@ -9,7 +15,7 @@ function SearchBar() {
         </div>
         {/* input */}
         <div className='border-b-2 border-black dark:border-white'>
-            <input type="text" placeholder='Search...' className='p-2 bg-transparent text-16px] outline-none text-slate-700 dark:text-slate-200' />
+            <input onChange={ (e) => {HandleSearch(e)}} type="text" placeholder='Search...' className='p-2 bg-transparent text-16px] outline-none text-slate-700 dark:text-slate-200' />
         </div>
     </div>
   )
