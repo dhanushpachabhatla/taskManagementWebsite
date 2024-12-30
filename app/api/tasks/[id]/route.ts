@@ -3,12 +3,14 @@ import { NextRequest } from 'next/server';
 import dbConnect from '../../../../db/connect';
 import Task from '../../../../db/models/Task';
 import mongoose from 'mongoose';
+
+// GET method
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   await dbConnect();
-  
+
   const url = new URL(req.url);
   const userId = url.searchParams.get('userId'); // Fetch userId from query params
-  
+
   if (!userId) {
     return NextResponse.json({ error: "User ID is required" }, { status: 400 });
   }
@@ -21,30 +23,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   return NextResponse.json(task);
 }
 
-// export async function PUT(req: Request, { params }: { params: { id: string } }) {
-//   await dbConnect();
-
-//   const url = new URL(req.url);
-//   const userId = url.searchParams.get('userId'); // Fetch userId from query params
-  
-//   if (!userId) {
-//     return NextResponse.json({ error: "User ID is required" }, { status: 400 });
-//   }
-
-//   const body = await req.json();
-//   const task = await Task.findOneAndUpdate({ _id: params.id, userId }, body, { new: true });
-//   if (!task) {
-//     return NextResponse.json({ error: "Task not found or not authorized" }, { status: 404 });
-//   }
-
-//   return NextResponse.json(task);
-// }
-
-export async function PUT(req:NextRequest, context: { params: { id: string } }) {
+// PUT method
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   await dbConnect();
 
-  // Directly access params.id
-  const id = context.params.id;
+  const { id } = params; // Destructure directly from params
 
   if (!id) {
     return NextResponse.json({ error: "Task ID is required" }, { status: 400 });
@@ -73,22 +56,27 @@ export async function PUT(req:NextRequest, context: { params: { id: string } }) 
   }
 }
 
-export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+// DELETE method
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   await dbConnect();
 
-  // Wait for context.params to be resolved
-  const { id } = await context.params; // This ensures params is properly awaited
+  const { id } = params; // Directly destructure params
 
   // Validate ObjectId format
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid Task ID" }, { status: 400 });
   }
 
-  // Try to delete the task based on taskId (using params.id)
-  const task = await Task.findByIdAndDelete(id);
-  if (!task) {
-    return NextResponse.json({ error: "Task not found" }, { status: 404 });
-  }
+  try {
+    // Try to delete the task based on taskId (using params.id)
+    const task = await Task.findByIdAndDelete(id);
+    if (!task) {
+      return NextResponse.json({ error: "Task not found" }, { status: 404 });
+    }
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
