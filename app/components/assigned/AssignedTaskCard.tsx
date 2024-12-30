@@ -8,7 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import AddIcon from '@mui/icons-material/Add';
 
 type Task = {
-    id: number;
+    id: string;
     title: string;
     created: string;
     dueDate: string;
@@ -22,7 +22,7 @@ type Task = {
 type Props = {
     task:Task;
     onUpdateTask: (updatedTask: Task) => void;
-    onDeleteTask: (taskId: number) => void;
+    onDeleteTask: (taskId: string) => void;
 }
 
 const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {

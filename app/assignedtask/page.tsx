@@ -8,7 +8,7 @@ import AssignedTaskCard from '../components/assigned/AssignedTaskCard'
 import AssignTaskButton from '../components/assigned/AssignTask'
 
 type Task = {
-  id: number;
+  id: string;
   title: string;
   created: string;
   dueDate: string;
@@ -19,9 +19,10 @@ type Task = {
   progress: number;
 };
 
+
 const initialTasks: Task[] = [
   {
-      id: 1,
+      id: "1",
       title: 'Build a Landing Page',
       created: '2 days ago',
       dueDate: '2024-12-31',
@@ -32,7 +33,7 @@ const initialTasks: Task[] = [
       progress: 80,
   },
   {
-      id: 2,
+      id: "2",
       title: 'API Integration',
       created: '5 days ago',
       dueDate: '2025-01-21',
@@ -43,7 +44,7 @@ const initialTasks: Task[] = [
       progress: 40,
   },
   {
-      id: 3,
+      id: "3",
       title: 'Write Documentation',
       created: '1 week ago',
       dueDate: '2025-04-28',
@@ -54,7 +55,7 @@ const initialTasks: Task[] = [
       progress: 0,
   },
   {
-      id: 4,
+      id: "4",
       title: 'Read Book',
       created: '2 week ago',
       dueDate: '2024-12-29',
@@ -74,12 +75,18 @@ function AssignedTaskPage() {
       setTasks((prevTasks) => [newTask, ...prevTasks]);
     };
     
-    const onUpdateTask = () =>{
-     
-    }
-    const onDeleteTask = () =>{
-      
-    }
+    const onUpdateTask = (updatedTask: Task) => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+        )
+      );
+    };
+    
+    const onDeleteTask = (taskId: number) => {
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    };
+    
     
     const filteredTasks = tasks.filter((task) => {
       if (!category) return true;
@@ -121,7 +128,8 @@ function AssignedTaskPage() {
     </div>
         <div className='overflow-auto flex gap-10 flex-wrap justify-center mt-7'>
         {sortedTasks.length > 0 ? (
-          sortedTasks.map((task) =><AssignedTaskCard  onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} key={task.id} task={task}/>)
+          sortedTasks.map((task) =><AssignedTaskCard  onUpdateTask={(updatedTask) => onUpdateTask(updatedTask)}
+          onDeleteTask={(taskId) => onDeleteTask(taskId)} key={task.id} task={task}/>)
         ) : (
           <p className="text-neutral-500 dark:text-neutral-300 text-6xl font-bold mt-36">
             No Tasks Made !

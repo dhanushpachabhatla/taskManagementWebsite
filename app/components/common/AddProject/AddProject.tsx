@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Tooltip } from "@mui/material";
+
 type AddProjectProps = {
   onAddTask: (newTask: any) => void;
 };
@@ -14,7 +15,7 @@ const AddProject = ({ onAddTask }: AddProjectProps) => {
     priority: "low",
     subtasks: [] as string[],
   });
-
+  
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     field: string
@@ -39,17 +40,27 @@ const AddProject = ({ onAddTask }: AddProjectProps) => {
     setTaskData({ ...taskData, subtasks: updatedSubtasks });
   };
 
+  // Function to format date to "YYYY-MM-DD"
+  const formatDate = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const handleSubmit = () => {
     if (taskData.title && taskData.dueDate && taskData.priority) {
       const newTask = {
-        id: Date.now(),
+        id: Date.now(),  // Use timestamp for the ID
         title: taskData.title,
-        created: "Just now",
-        dueDate: taskData.dueDate,
+        created:formatDate(Date.now()),  // Format the created date to "YYYY-MM-DD"
+        dueDate: taskData.dueDate, // Keep dueDate as is (no change needed for the input type="date")
         priority: taskData.priority,
         subtasks: taskData.subtasks.filter(Boolean), // Remove empty subtasks
         progress: 0,
       };
+      console.log( formatDate(Date.now()))
       onAddTask(newTask);
       setTaskData({ title: "", dueDate: "", priority: "low", subtasks: [] });
       setIsModalOpen(false);
@@ -112,7 +123,7 @@ const AddProject = ({ onAddTask }: AddProjectProps) => {
                     onClick={() => removeSubtask(index)}
                   >
                     <Tooltip title={"delete"}>
-                    <DeleteIcon/>
+                      <DeleteIcon />
                     </Tooltip>
                   </button>
                 </div>
@@ -148,4 +159,3 @@ const AddProject = ({ onAddTask }: AddProjectProps) => {
 };
 
 export default AddProject;
-

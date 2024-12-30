@@ -3,7 +3,7 @@ import SplitscreenIcon from '@mui/icons-material/Splitscreen';
 import { Task as TaskIcon } from '@mui/icons-material';
 
 type TaskType = {
-  id: number;
+  id: string;
   title: string;
   created: string;
   dueDate: string;
@@ -95,9 +95,9 @@ function TaskLabels({ completed, total }: { completed: number; total: number }) 
 function RightProjectList({ tasks }: { tasks: TaskType[] }) {
   return (
     <div className='w-60 flex flex-col overflow-auto mt-16 gap-4'>
-      {tasks.map((task) => (
-        <React.Fragment key={task.id}>
-          <RightSingleProject recentTask={task.title} created={task.created} />
+      {tasks.map((task,item) => (
+        <React.Fragment key={task.id||item}>
+          <RightSingleProject key={task.id } recentTask={task.title} created={task.created} />
           <hr className='w-[80%] mx-auto text-slate-800 dark:text-slate-100 opacity-50' />
         </React.Fragment>
       ))}

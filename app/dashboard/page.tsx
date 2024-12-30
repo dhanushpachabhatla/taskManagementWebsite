@@ -7,7 +7,7 @@ import AddProject from '../components/common/AddProject/AddProject';
 import SortByButton from '../components/common/SortByButton/SortByButton';
 
 type Task = {
-  id: number;
+  id: string;
   title: string;
   created: string;
   dueDate: string;
@@ -16,69 +16,90 @@ type Task = {
   progress: number;
 };
 
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: 'Build a Landing Page',
-    created: '2 days ago',
-    dueDate: '2024-12-31',
-    priority:'high',
-    subtasks: ['Create wireframe', 'Implement design', 'Write content'],
-    progress: 0,
-},
-{
-    id: 2,
-    title: 'API Integration',
-    created: '5 days ago',
-    dueDate: '2025-01-2',
-    priority:'low',
-    subtasks: ['Set up endpoints', 'Test functionality', 'Deploy to staging'],
-    progress: 40,
-},
-{
-    id: 3,
-    title: 'Write Documentation',
-    created: '1 week ago',
-    dueDate: '2024-12-28',
-    priority:'med',
-    subtasks: ['Outline topics', 'Draft content', 'Review and edit'],
-    progress: 60,
-},
-{
-    id: 4,
-    title: 'Read Book',
-    created: '2 week ago',
-    dueDate: '2024-01-29',
-    priority:'high',
-    subtasks: ['Outline topics', 'Draft content', 'underline'],
-    progress: 30,
-},
-{
-    id: 5,
-    title: 'Websocket',
-    created: '3 week ago',
-    dueDate: '2025-12-29',
-    priority:'high',
-    subtasks: ['Learn', 'Do', 'Push Changes'],
-    progress: 100,
-},
-];
-
 function Dashboard() {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);  // Initialize as empty array
   const [category, setCategory] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [searchValue, setsearchValue] = useState('');
-  const handleAddTask = (newTask: Task) => {
-    setTasks((prevTasks) => [newTask, ...prevTasks]);
+  const [userId, setUserId] = useState(""); // Get from Firebase Auth
+  
+  const fetchTasks = async () => {
+    const response = await fetch(`/api/tasks?userId=${userId}`);
+    const text = await response.text();
+    console.log('Response Text:', text);
+    if (!response.ok) {
+      throw new Error('Failed to fetch tasks');
+    }
+  
+    const data = JSON.parse(text);
+    setTasks(data);  // Update tasks state with fetched data
   };
   
-  const onUpdateTask = () =>{
+  useEffect(() => {
+    // Get the userId from localStorage
+    const storedUid = localStorage.getItem('userId');
     
-  }
-  const onDeleteTask = () =>{
-    
-  }
+    if (storedUid) {
+      setUserId(storedUid);
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (userId) {
+      fetchTasks();
+    }
+  }, [userId]);  // Fetch tasks when userId is set
+  
+  const handleAddTask = async (newTask: Task) => {
+    const response = await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...newTask, userId }),
+    });
+    const data = await response.json();
+    setTasks((prevTasks) => [data, ...prevTasks]);
+  };
+
+  const onUpdateTask = async (updatedTask: Task) => {
+    const response = await fetch(`/api/tasks/${updatedTask._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedTask),
+    });
+  
+    if (!response.ok) {
+      console.error('Failed to update task');
+      return;
+    }
+  
+    const data = await response.json();
+    setTasks((prevTasks) => {
+      return prevTasks.map((task) =>
+          task._id === updatedTask._id ? { ...task, ...data } : task
+      );
+  });
+  };
+  
+  
+  
+  const onDeleteTask = async (taskId: string) => { 
+    try {
+      // Make the DELETE request with taskId
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+  
+      // Handle failure response
+      if (!response.ok) {
+        throw new Error('Failed to delete task');
+      }
+  
+      // On successful deletion, remove the task from the state
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId)); // Use _id for deletion
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
   
   
   const filteredTasks = tasks.filter((task) => {
@@ -87,32 +108,32 @@ function Dashboard() {
     if (category === 'On Progress') return task.progress > 0 && task.progress < 100;
     if (category === 'Done') return task.progress === 100;
     return true;
-});
+  });
   
-const priorityFilteredTasks = filteredTasks.filter((task) => {
+  const priorityFilteredTasks = filteredTasks.filter((task) => {
     if (sortBy === 'P-High') return task.priority === 'high';
     if (sortBy === 'P-Med') return task.priority === 'med';
     if (sortBy === 'P-Low') return task.priority === 'low';
     return true;
-});
+  });
 
-// Apply sorting
-const sortedTasks = priorityFilteredTasks.sort((a, b) => {
+  // Apply sorting
+  const sortedTasks = priorityFilteredTasks.sort((a, b) => {
     if (sortBy === 'Recent') {
-        return new Date(b.created).getTime() - new Date(a.created).getTime(); // Most recently created first
+      return new Date(b.created).getTime() - new Date(a.created).getTime(); // Most recently created first
     }
     if (sortBy === 'Due-Date') {
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(); // Closest due date first
+      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(); // Closest due date first
     }
     return 0; 
-});
-//apply searching
-const searchTasks = sortedTasks.filter(
-  (task) =>
-    task.title.toLowerCase().includes(searchValue.trim().toLowerCase())
-);
-  
-  
+  });
+
+  // Apply searching
+  const searchTasks = sortedTasks.filter(
+    (task) =>
+      task.title && task.title.toLowerCase().includes(searchValue.trim().toLowerCase())
+  );
+
   return (
     <div
       style={{ marginTop: '80px' }}
@@ -120,7 +141,7 @@ const searchTasks = sortedTasks.filter(
     >
       <div className="w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0">
         <div className="flex justify-between">
-          <SearchBar search={setsearchValue}  />
+          <SearchBar search={setsearchValue} />
           <AddProject onAddTask={handleAddTask} />
         </div>
         <div className="mt-16 flex justify-between font-bold items-center">
@@ -128,13 +149,13 @@ const searchTasks = sortedTasks.filter(
           <SortByButton onCategoryChange={setCategory} onSortByChange={setSortBy} />
         </div>
         <div className="overflow-auto flex gap-10 flex-wrap justify-center mt-7">
-        {searchTasks.length > 0 ? (
-          searchTasks.map((task) => <ProjectCard onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} key={task.id} task={task} />)
-        ) : (
-          <p className="text-neutral-500 dark:text-neutral-300 text-6xl font-bold mt-36">
-            No Tasks Made !
-          </p>
-        )}
+          {searchTasks.length > 0 ? (
+            searchTasks.map((task, index) => <ProjectCard onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} key={task.id || index} task={task} />)
+          ) : (
+            <p className="text-neutral-500 dark:text-neutral-300 text-6xl font-bold mt-36">
+              No Tasks Made!
+            </p>
+          )}
         </div>
       </div>
       <StatsRightSideBar task={sortedTasks} />
