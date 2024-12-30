@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import dbConnect from '../../../../db/connect';
 import Task from '../../../../db/models/Task';
 import mongoose from 'mongoose';
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   await dbConnect();
   
   const url = new URL(req.url);
@@ -39,7 +40,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 //   return NextResponse.json(task);
 // }
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(req:NextRequest, context: { params: { id: string } }) {
   await dbConnect();
 
   // Directly access params.id
@@ -72,7 +73,7 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
   }
 }
 
-export async function DELETE(req: Request, context: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
   await dbConnect();
 
   // Wait for context.params to be resolved

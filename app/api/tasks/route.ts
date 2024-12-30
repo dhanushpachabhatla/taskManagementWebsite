@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../db/connect';
 import Task from '../../../db/models/Task';
-
-export async function GET(req: Request) {
+import { NextRequest } from 'next/server';
+export async function GET(req: NextRequest) {
   await dbConnect();
 
   const url = new URL(req.url);
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
   return NextResponse.json(tasks);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   await dbConnect();
 
   const body = await request.json();
