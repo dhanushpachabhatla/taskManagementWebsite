@@ -7,6 +7,7 @@ import AddProject from '../components/common/AddProject/AddProject';
 import SortByButton from '../components/common/SortByButton/SortByButton';
 
 type Task = {
+  _id: string; 
   id: string;
   title: string;
   created: string;
@@ -97,7 +98,7 @@ function Dashboard() {
       // On successful deletion, remove the task from the state
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId)); // Use _id for deletion
     } catch (error) {
-      console.error('Error:', error.message);
+      console.error('Error: deleterror',);
     }
   };
   

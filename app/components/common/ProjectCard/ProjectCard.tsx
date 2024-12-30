@@ -5,6 +5,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import Tooltip from "@mui/material/Tooltip";
 
 type Task = {
+    _id: string; 
     id: string;
     title: string;
     created: string;
