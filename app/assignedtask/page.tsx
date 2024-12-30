@@ -76,15 +76,15 @@ function AssignedTaskPage() {
     };
     
     const onUpdateTask = (updatedTask: Task) => {
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-        )
-      );
+      // setTasks((prevTasks) =>
+      //   prevTasks.map((task) =>
+      //     task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+      //   )
+      // );
     };
     
-    const onDeleteTask = (taskId: number) => {
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    const onDeleteTask = (taskId: string) => {
+      // setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     };
     
     

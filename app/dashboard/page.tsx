@@ -98,7 +98,7 @@ function Dashboard() {
       // On successful deletion, remove the task from the state
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId)); // Use _id for deletion
     } catch (error) {
-      console.error('Error: deleterror',);
+      console.error('Error: deleterror');
     }
   };
   
