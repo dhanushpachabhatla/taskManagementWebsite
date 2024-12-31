@@ -5,21 +5,43 @@ import { NextRequest } from 'next/server';
 
 // GET method to fetch tasks for a user
 export async function GET(req: NextRequest) {
-  await dbConnect();
-
-  const url = new URL(req.url);
-  const userId = url.searchParams.get('userId'); // Fetch userId from query params
-
-  if (!userId) {
-    return NextResponse.json({ error: "User ID is required" }, { status: 400 });
-  }
-
+  console.log("API route triggered");
   try {
-    const tasks = await Task.find({ userId }); // Fetch tasks for the specific user
-    return NextResponse.json(tasks);
+    await dbConnect();
+    const url = new URL(req.url);
+    const userId = url.searchParams.get('userId');
+    const assignedPage = url.searchParams.get('assignedPage') === 'true'; // Determine if it's the AssignedTo page
+    const username = url.searchParams.get('username'); 
+
+    if (!userId || !username) {
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
+
+    if (assignedPage) {
+      let query: any = {};
+      
+      if (assignedPage) {
+        query.$or = [
+          { assignedTo: username },
+          { assignedBy: username },
+        ];
+      }
+  
+      const tasks = await Task.find(query);
+      return NextResponse.json(tasks);
+    }
+    else{
+      let query: any = { userId };
+      query.$or = [
+        { assignedTo:{ $exists: false }},
+        { assignedBy:{ $exists: false }},
+      ];
+      const tasks = await Task.find(query);
+      return NextResponse.json(tasks);
+    }
   } catch (error) {
-    console.error("Error fetching tasks:", error);
-    return NextResponse.json({ error: "Error fetching tasks" }, { status: 500 });
+    console.error('Error fetching tasks:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 

@@ -7,6 +7,7 @@ import AddProject from '../components/common/AddProject/AddProject';
 import SortByButton from '../components/common/SortByButton/SortByButton';
 
 type Task = {
+  username:string;
   _id: string; 
   id: string;
   title: string;
@@ -24,17 +25,17 @@ function Dashboard() {
   const [searchValue, setsearchValue] = useState('');
   const [userId, setUserId] = useState(""); // Get from Firebase Auth
   
-  const fetchTasks = async () => {
-    const response = await fetch(`/api/tasks?userId=${userId}`);
-    const text = await response.text();
-    console.log('Response Text:', text);
-    if (!response.ok) {
-      throw new Error('Failed to fetch tasks');
-    }
+  // const fetchTasks = async () => {
+  //   const response = await fetch(`/api/tasks?userId=${userId}`);
+  //   const text = await response.text();
+  //   console.log('Response Text:', text);
+  //   if (!response.ok) {
+  //     throw new Error('Failed to fetch tasks');
+  //   }
   
-    const data = JSON.parse(text);
-    setTasks(data);  // Update tasks state with fetched data
-  };
+  //   const data = JSON.parse(text);
+  //   setTasks(data);  // Update tasks state with fetched data
+  // };
   
   useEffect(() => {
     // Get the userId from localStorage
@@ -45,11 +46,38 @@ function Dashboard() {
     }
   }, []);
   
+  // useEffect(() => {
+  //   if (userId) {
+  //     fetchTasks();
+  //   }
+  // }, [userId]);  // Fetch tasks when userId is set
+  
+  const fetchTasks = async (assignedPage = false) => {
+    const storedUsername = localStorage.getItem('username'); 
+    try {
+      const response = await fetch(
+        `/api/tasks?userId=${userId}&assignedPage=${assignedPage}&username=${storedUsername}` // Add username as a query parameter
+      );
+      const text = await response.text();
+      console.log('Response Text:', text);
+      if (!response.ok) {
+        throw new Error('Failed to fetch tasks');
+      }
+  
+      const data = JSON.parse(text);
+      setTasks(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  // Fetch tasks for Dashboard
   useEffect(() => {
     if (userId) {
-      fetchTasks();
+      fetchTasks(false); // Pass false for Dashboard
     }
-  }, [userId]);  // Fetch tasks when userId is set
+  }, [userId]);
+  
   
   const handleAddTask = async (newTask: Task) => {
     const response = await fetch("/api/tasks", {

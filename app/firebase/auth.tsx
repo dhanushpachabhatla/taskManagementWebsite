@@ -5,7 +5,7 @@ export const login = async (email: string, password: string) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user
-    console.log("User ID:", user.uid);
+    // console.log("User ID:", user.uid);
     localStorage.setItem('userId', user.uid);
     // uid = user.uid;
     return userCredential.user;

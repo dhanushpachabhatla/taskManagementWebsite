@@ -5,6 +5,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import Tooltip from "@mui/material/Tooltip";
 
 type Task = {
+    username:string
     _id: string; 
     id: string;
     title: string;
@@ -26,7 +27,7 @@ const ProjectCard = ({ task, onUpdateTask, onDeleteTask }: Props) => {
     const [showEditWindow, setShowEditWindow] = useState(false); // To show the edit window
     const [editedTask, setEditedTask] = useState(task);
     const menuRef = useRef<HTMLDivElement | null>(null);
-
+    
     // Handle toggle for showing the "Edit" and "Delete" options
     const handleMoreClick = () => {
         setShowOptions((prev) => !prev);

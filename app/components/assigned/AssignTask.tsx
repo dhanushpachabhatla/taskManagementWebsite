@@ -15,6 +15,7 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
         assignedTo: "",
         assignedBy: "",
         subtasks: [""], // Initialize with one subtask field
+        username: "",
     });
 
     const handleInputChange = (
@@ -49,11 +50,12 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
             const newTask = {
                 id: Date.now(),
                 title: taskData.title,
-                created: "Just now",
+                created: formatDate(Date.now()),
                 assignedTo: taskData.assignedTo,
                 assignedBy: taskData.assignedBy,
                 dueDate: taskData.dueDate,
                 priority: taskData.priority,
+                username: localStorage.getItem("username"),
                 subtasks: taskData.subtasks.filter(Boolean), // Remove empty subtasks
                 progress: 0,
             };
@@ -65,12 +67,20 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
                 assignedTo: "",
                 assignedBy: "",
                 subtasks: [""],
+                username:"",
             });
             setIsModalOpen(false);
         } else {
             alert('Please fill all required fields.');
         }
     };
+    const formatDate = (timestamp: number) => {
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
 
     return (
         <>

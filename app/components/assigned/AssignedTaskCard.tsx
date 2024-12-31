@@ -5,9 +5,10 @@ import SplitscreenIcon from '@mui/icons-material/Splitscreen';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircleIcon from '@mui/icons-material/Circle';
 import Tooltip from '@mui/material/Tooltip';
-import AddIcon from '@mui/icons-material/Add';
 
 type Task = {
+    username:string;
+    _id:string;
     id: string;
     title: string;
     created: string;
@@ -26,28 +27,36 @@ type Props = {
 }
 
 const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
-    const [showEdit, setShowEdit] = useState(false);
+    const [showOptions, setShowOptions] = useState(false);  // To show or hide the edit/delete options
     const [showEditWindow, setShowEditWindow] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const [editedTask, setEditedTask] = useState(task);
     
-    const handleEditToggle = () => {
-        setShowEdit((prev) => !prev);
+    const handleMoreClick = () => {
+        setShowOptions((prev) => !prev);
     };
     
     const handleClickOutside = (event: MouseEvent) => {
         if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-            setShowEdit(false);
+            setShowOptions(false);
         }
     };
     
 
     const handleDeleteButton = () => {
-        onDeleteTask(task.id);
+        onDeleteTask(task._id);
+        setShowOptions(false); // Close the menu after deleting
     };
 
+    const handleEditButton = () => {
+        setShowEditWindow(true);
+        setShowOptions(false); // Close the options menu after selecting edit
+    };
+    
     const handleSubmitEdit = () => {
-        onUpdateTask(editedTask);
+        // Create a new task object with only the modified values
+        const updatedTask = { ...task, progress: editedTask.progress, dueDate: editedTask.dueDate };
+        onUpdateTask(updatedTask); // Pass the updated task to the parent
         setShowEditWindow(false);
     };
 
@@ -88,14 +97,14 @@ const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
             {/* more icon */}
             <div className='relative items-center flex'>
             <Tooltip title={"Edit"}>
-                    <MoreVertIcon onClick={handleEditToggle} sx={{ fontSize: '30px' }} className="text-slate-800 dark:text-slate-100" />
+                    <MoreVertIcon onClick={handleMoreClick} sx={{ fontSize: '30px' }} className="text-slate-800 dark:text-slate-100" />
                     </Tooltip>
-                    {showEdit && (
+                    {showOptions && (
                         <div
                         ref={menuRef}
                         className="absolute top-8 right-0 bg-blue-800 dark:bg-slate-200  text-slate-300 dark:text-blue-800 rounded-md flex flex-col shadow-lg z-10"
                         >
-                            <button onClick={()=>{setShowEditWindow(true)}} className="font-semibold border-b-2 pb-2 px-4 hover:text-blue-800 hover:bg-slate-300 hover:dark:bg-blue-800 hover:dark:text-neutral-300">
+                            <button onClick={handleEditButton} className="font-semibold border-b-2 pb-2 px-4 hover:text-blue-800 hover:bg-slate-300 hover:dark:bg-blue-800 hover:dark:text-neutral-300">
                                 Edit
                             </button>
                             <button onClick={handleDeleteButton} className="font-semibold pt-1 px-4 hover:text-blue-800 hover:bg-slate-300 hover:dark:bg-blue-800 hover:dark:text-neutral-300">
@@ -114,9 +123,9 @@ const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
                         <span className="text-slate-600 dark:text-slate-100">{subtask}</span>
                     </li>
                 ))}
-            </ul>  : <h1 className=' flex gap-3 items-center  text-blue-600 dark:text-slate-300 w-60 font-sans font-bold bg-blue-700 rounded-lg p-1 m-1 text-lg '>
+            </ul>  : <h1 className=' flex gap-3 items-center  text-blue-600 dark:text-slate-300 w-60 font-sans font-bold bg-yellow-700 rounded-lg p-1 m-1 text-lg '>
             <CircleIcon sx={{ fontSize: '9px' }} className="text-slate-700 dark:text-slate-400 ml-1 items-center" />
-            <span className="text-slate-600 dark:text-slate-100">No SubTasks</span> </h1>}
+            <span className="text-slate-300 dark:text-slate-100">No SubTasks</span> </h1>}
             
         <div className='flex flex-col text-sm mt-2'>
             <span className='font-mono text-yellow-600 font-bold'>

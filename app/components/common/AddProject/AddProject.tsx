@@ -14,6 +14,7 @@ const AddProject = ({ onAddTask }: AddProjectProps) => {
     dueDate: "",
     priority: "low",
     subtasks: [] as string[],
+    username:"",
   });
   
   const handleInputChange = (
@@ -59,10 +60,11 @@ const AddProject = ({ onAddTask }: AddProjectProps) => {
         priority: taskData.priority,
         subtasks: taskData.subtasks.filter(Boolean), // Remove empty subtasks
         progress: 0,
+        username: localStorage.getItem("username"),
       };
       console.log( formatDate(Date.now()))
       onAddTask(newTask);
-      setTaskData({ title: "", dueDate: "", priority: "low", subtasks: [] });
+      setTaskData({ title: "", dueDate: "", priority: "low", subtasks: [],username:"" });
       setIsModalOpen(false);
     } else {
       alert("Please fill in all required fields.");

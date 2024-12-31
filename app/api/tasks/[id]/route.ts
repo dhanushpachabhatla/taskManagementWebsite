@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 // GET method
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await dbConnect();
-
+  console.log("get is consoling")
   // Resolve params to ensure it's properly resolved as a Promise
   const { id } = await params;  // Await the promise to get the `id`
 
@@ -25,6 +25,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
   return NextResponse.json(task);
 }
+
+
+
 
 // PUT method
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -45,7 +48,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid Task ID" }, { status: 400 });
   }
-
   try {
     const task = await Task.findByIdAndUpdate(id, body, { new: true, runValidators: true });
     if (!task) {
@@ -62,7 +64,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 // DELETE method
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await dbConnect();
-
   const { id } = await params; // Resolve params to get the `id`
 
   // Validate ObjectId format

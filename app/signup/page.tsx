@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { signup } from '../firebase/auth';
 import Image from 'next/image';
-
+import { useRouter } from 'next/navigation';
 const SignUp: React.FC = () => {
+    const router = useRouter();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [userID, setuserID] = useState<string>('');
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,6 +21,7 @@ const SignUp: React.FC = () => {
                 await signup(email, password);
                 // Redirect or show success message here
                 console.log('Signup successful');
+                router.push("/dashboard");
             } catch (error) {
                 setErrorMessage('Sign up failed. Please check your details.');
             } finally {
@@ -39,6 +42,17 @@ const SignUp: React.FC = () => {
                 <h3 className="text-xl font-semibold mb-4">Sign Up TO GET STARTED</h3>
                 <form onSubmit={onSubmit} className="w-full">
                     <div className="mb-4">
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            autoComplete="username"
+                            required
+                            placeholder="Enter your username"
+                            value={userID}
+                            onChange={(e) => setuserID(e.target.value)}
+                            className="w-full px-4 py-2 text-black border rounded-lg focus:outline-none focus:ring focus:ring-indigo-500"
+                        />
+                    </div>
                         <input
                             type="email"
                             autoComplete="email"

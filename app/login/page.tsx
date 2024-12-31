@@ -6,7 +6,8 @@ import { login } from '../firebase/auth';
 import Image from 'next/image';
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
-
+    const [userID, setuserID] = useState<string>('');
+    
     const [password, setPassword] = useState<string>('');
     const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -20,6 +21,8 @@ const Login: React.FC = () => {
             try {
                 await login(email, password);
                 localStorage.setItem("isLoggedIn", "true"); 
+                localStorage.setItem('username',userID); 
+                console.log(userID); 
                 router.push('/dashboard'); 
             } catch (error) {
                 setErrorMessage('Login failed. Please check your credentials.');
@@ -40,6 +43,17 @@ const Login: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-4">LOGIN TO GET STARTED</h3>
                 <form onSubmit={onSubmit} className="w-full">
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            autoComplete="username"
+                            required
+                            placeholder="Enter your username"
+                            value={userID}
+                            onChange={(e) => setuserID(e.target.value)}
+                            className="w-full px-4 py-2 text-black border rounded-lg focus:outline-none focus:ring focus:ring-indigo-500"
+                        />
+                    </div>
                     <div className="mb-4">
                         <input
                             type="email"

@@ -3,7 +3,6 @@ import mongoose, { Mongoose } from 'mongoose';
 // const MONGO_URI = process.env.MONGO_URI || '';
 const password = process.env.password || ''; // Fallback to an empty string if undefined
 const MONGO_URI = "mongodb+srv://dhanushpachabhatla:"+password+"@taskmaster.o60or.mongodb.net/?retryWrites=true&w=majority&appName=taskmaster";
-
 if (!MONGO_URI) {
   throw new Error('Please define the MONGO_URI environment variable inside .env.local');
 }

@@ -10,6 +10,7 @@ interface ITask {
   assignedBy?: string;
   assignedTo?: string;
   userId: string; // Store Firebase UID here
+  username: string; // 
 }
 
 const TaskSchema = new Schema<ITask>(
@@ -22,7 +23,8 @@ const TaskSchema = new Schema<ITask>(
     progress: { type: Number, default: 0 },
     assignedBy: { type: String },
     assignedTo: { type: String },
-    userId: { type: String, required: true }, // Store Firebase UID
+    userId: { type: String, required: true },
+    username: { type: String, required: true },
   },
   { timestamps: true }
 );
