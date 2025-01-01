@@ -166,14 +166,14 @@ function Dashboard() {
   return (
     <div
       style={{ marginTop: '80px' }}
-      className="bg-slate-100 dark:bg-neutral-950 w-full min-h-screen flex"
+      className="bg-slate-100 dark:bg-neutral-950 w-full min-h-screen flex flex-col custom:flex-row"
     >
-      <div className="w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0">
-        <div className="flex justify-between">
+      <div className=" flex-grow w-full custom:w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0">
+        <div className=" flex justify-between">
           <SearchBar search={setsearchValue} />
           <AddProject onAddTask={handleAddTask} />
         </div>
-        <div className="mt-16 flex justify-between font-bold items-center">
+        <div className="mt-16 flex justify-between font-bold items-center flex-col md:flex-row gap-8">
           <p className="text-[26px] font-bold text-neutral-700 dark:text-slate-200">My Tasks</p>
           <SortByButton onCategoryChange={setCategory} onSortByChange={setSortBy} />
         </div>
@@ -181,13 +181,15 @@ function Dashboard() {
           {searchTasks.length > 0 ? (
             searchTasks.map((task, index) => <ProjectCard onUpdateTask={onUpdateTask} onDeleteTask={onDeleteTask} key={task.id || index} task={task} />)
           ) : (
-            <p className="text-neutral-500 dark:text-neutral-300 text-6xl font-bold mt-36">
+            <p className="text-neutral-500 dark:text-neutral-300 text-4xl md:text-6xlfont-bold mt-36">
               No Tasks Made!
             </p>
           )}
         </div>
       </div>
+      <div className='flex-grow'>
       <StatsRightSideBar task={sortedTasks} />
+      </div>
     </div>
   );
 }

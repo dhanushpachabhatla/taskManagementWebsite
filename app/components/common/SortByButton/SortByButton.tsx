@@ -27,11 +27,11 @@ const SortByButton = ({ onCategoryChange, onSortByChange }: Props) => {
   };
 
   return (
-    <div className="flex gap-10">
-      <div className="flex gap-2 font-semibold p-1">
-        <span className="text-blue-800 dark:text-slate-300 items-center flex">Category</span>
-        <FormControl variant="standard" sx={{ minWidth: 120 }}>
-          <Select value={category} onChange={handleCategory} displayEmpty className="dark:bg-slate-100 rounded-md pl-1">
+    <div className="flex  sm:gap-1 md:gap-5 lg:gap-10">
+      <div className="flex gap-1 lg:gap-2 font-semibold p-1">
+        <span className="text-blue-800 dark:text-slate-300 items-center flex  lg:text-base ">Category</span>
+        <FormControl variant="standard" sx={{ minWidth: 120 }} className='lg:w-28 w-16'>
+          <Select value={category} onChange={handleCategory} displayEmpty className="dark:bg-slate-100 rounded-md lg:w-28 w-20 pl-1">
             <MenuItem value=""><em>None</em></MenuItem>
             <MenuItem value="ToDo">ToDo</MenuItem>
             <MenuItem value="On Progress">On Progress</MenuItem>
@@ -39,10 +39,10 @@ const SortByButton = ({ onCategoryChange, onSortByChange }: Props) => {
           </Select>
         </FormControl>
       </div>
-      <div className="flex gap-3 font-semibold p-1">
-        <span className="text-blue-800 dark:text-slate-300 items-center flex">Sort By</span>
-        <FormControl variant="standard" sx={{ minWidth: 120 }}>
-          <Select value={sortBy} onChange={handleSortBy} displayEmpty className="dark:bg-slate-100 rounded-md pl-1">
+      <div className="flex gap-1 lg:gap-2 font-semibold p-1">
+        <span className="text-blue-800 dark:text-slate-300 items-center flex  lg:text-base ">Sort By</span>
+        <FormControl variant="standard" sx={{ minWidth: 120 }} className='lg:w-28 w-16'>
+          <Select value={sortBy} onChange={handleSortBy} displayEmpty className="dark:bg-slate-100 rounded-md lg:w-28 w-20 pl-1">
             <MenuItem value=""><em>None</em></MenuItem>
             <MenuItem value="Recent">Recent</MenuItem>
             <MenuItem value="Due-Date">Due-Date</MenuItem>

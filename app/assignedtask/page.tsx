@@ -160,14 +160,14 @@ function AssignedTaskPage() {
     
     
   return (
-    <div style={{ marginTop: "80px" }} className=' bg-slate-100 dark:bg-neutral-950 w-full min-h-screen flex'>
-      <div className='w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0'>
+    <div style={{ marginTop: "80px" }} className=' bg-slate-100 dark:bg-neutral-950 w-full min-h-screen flex flex-col custom:flex-row'>
+      <div className=' w-full custom:w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0'>
         <div className='flex justify-between'>
           <SearchBar search={setsearchValue}/>
           <AssignTaskButton  onAddTask={handleAddTask}/>
         </div>
-        <div className='mt-16 flex justify-between font-bold items-center'>
-        <p className='text-[26px] font-bold text-neutral-700 dark:text-slate-200'>My Assigned Tasks</p>
+        <div className='mt-16 flex justify-between font-bold items-center flex-col md:flex-row gap-8'>
+        <p className='text-[26px] font-bold text-neutral-700 dark:text-slate-200 '>My Assigned Tasks</p>
         <SortByButton onCategoryChange={setCategory} onSortByChange={setSortBy}/>
     </div>
         <div className='overflow-auto flex gap-10 flex-wrap justify-center mt-7'>
@@ -175,7 +175,7 @@ function AssignedTaskPage() {
           searchTasks.map((task,item) =><AssignedTaskCard  onUpdateTask={(updatedTask) => onUpdateTask(updatedTask)}
           onDeleteTask={(taskId) => onDeleteTask(taskId)} key={task.id||item} task={task}/>)
         ) : (
-          <p className="text-neutral-500 dark:text-neutral-300 text-6xl font-bold mt-36">
+          <p className="text-neutral-500 dark:text-neutral-300 text-4xl md:text-6xl font-bold mt-36">
             No Tasks Made !
           </p>
         )}

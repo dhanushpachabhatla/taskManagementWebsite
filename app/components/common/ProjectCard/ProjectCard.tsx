@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import SplitscreenIcon from "@mui/icons-material/Splitscreen";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CircleIcon from "@mui/icons-material/Circle";
 import Tooltip from "@mui/material/Tooltip";
@@ -71,12 +71,12 @@ const ProjectCard = ({ task, onUpdateTask, onDeleteTask }: Props) => {
 
     return (
         <>
-            <div className="size-80 rounded-lg gap-3 flex flex-col justify-between bg-slate-300 dark:bg-zinc-800 p-3 border-[4px] border-transparent hover:border-blue-800 dark:hover:border-slate-300">
+            <div className="size-80 low:size-96 lg:size-80 rounded-lg gap-3 flex flex-col justify-between bg-slate-300 dark:bg-zinc-800 p-3 border-[4px] border-transparent hover:border-blue-800 dark:hover:border-slate-300">
                 {/* Project icon and title */}
                 <div className="flex gap-4 justify-around">
                     {/* Icon */}
                     <div className="items-center flex">
-                        <SplitscreenIcon
+                        <AssignmentIcon 
                             sx={{ fontSize: "30px" }}
                             className="text-slate-100 bg-blue-800 rounded-md p-1 m-1"
                         />

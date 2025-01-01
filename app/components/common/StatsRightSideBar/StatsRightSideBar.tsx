@@ -1,5 +1,5 @@
 import React from 'react';
-import SplitscreenIcon from '@mui/icons-material/Splitscreen';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Task as TaskIcon } from '@mui/icons-material';
 
 type TaskType = {
@@ -22,7 +22,7 @@ const StatsRightSideBar = ({ task }: Props) => {
   const completed = task.filter(t => t.progress === 100).length;  // Tasks with progress 100
 
   return (
-    <div className='w-[22%] flex flex-col items-center gap-2 bg-slate-300  dark:bg-neutral-800 m-6 rounded-md border-[4px] border-transparent hover:border-blue-800 dark:hover:border-slate-300'>
+    <div className=' mb-10 w-[22%] flex flex-col min-w-80 max-h-fit items-center  gap-2 bg-slate-300  dark:bg-neutral-800 mx-auto custom:m-2 lg:m-6 rounded-md border-[4px] border-transparent hover:border-blue-800 dark:hover:border-slate-300'>
       {/* tasks completed text */}
       <div className='text-3xl font-semibold text-blue-600 mt-9'>
         Tasks Completed
@@ -109,7 +109,7 @@ function RightSingleProject({ recentTask, created }: { recentTask: string; creat
   return (
     <div className='flex items-center gap-4'>
       <div className='w-8 h-9 bg-blue-800 rounded-md justify-center items-center flex text-white'>
-        <SplitscreenIcon sx={{ fontSize: '19px' }} />
+        <AssignmentIcon sx={{ fontSize: '19px' }} />
       </div>
       <ul>
         <li className='text-[16px] font-semibold text-slate-600 dark:text-slate-300'>{recentTask}</li>

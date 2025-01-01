@@ -80,7 +80,7 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-      };
+        };
 
     return (
         <>
@@ -116,13 +116,13 @@ const AssignTaskButton = ({ onAddTask }: AssignTaskButtonProps) => {
                             <input
                                 type="text"
                                 value={taskData.assignedTo}
-                                placeholder="Assign to"
+                                placeholder="Assign to (username)"
                                 onChange={(e) => handleInputChange(e, "assignedTo")}
                                 className="w-full p-2 mb-2 rounded border text-neutral-800"
                             />
                             <input
                                 type="text"
-                                placeholder="Assign from"
+                                placeholder="your username"
                                 value={taskData.assignedBy}
                                 onChange={(e) => handleInputChange(e, "assignedBy")}
                                 className="w-full p-2 mb-2 rounded border text-neutral-800"

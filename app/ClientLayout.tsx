@@ -18,7 +18,7 @@ export default function ClientLayout({
       const userLoggedIn = localStorage.getItem("isLoggedIn") === "true"; // Replace with actual login check logic
     setIsLoggedIn(userLoggedIn);
     
-    if (!userLoggedIn && (pathname === "/dashboard" || pathname === "/profile" || pathname === "/assigned")) {
+    if (!userLoggedIn && (pathname === "/dashboard" || pathname === "/profile" || pathname === "/assignedtask")) {
       router.push("/login"); // Redirect to login page
     }
 

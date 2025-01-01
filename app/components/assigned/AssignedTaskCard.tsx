@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { useState,useEffect,useRef } from 'react';
-import SplitscreenIcon from '@mui/icons-material/Splitscreen';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CircleIcon from '@mui/icons-material/Circle';
 import Tooltip from '@mui/material/Tooltip';
@@ -73,7 +73,7 @@ const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
         <div className='flex gap-4 justify-around '>
             {/* icon */}
             <div className='items-center flex'>
-                <SplitscreenIcon  sx={{fontSize:"30px"}} className='text-slate-100 bg-blue-800 rounded-md p-1 m-1 '/>
+                <AssignmentIcon  sx={{fontSize:"30px"}} className='text-slate-100 bg-blue-800 rounded-md p-1 m-1 '/>
             </div>
             {/* title */}
             <div className='flex flex-col mr-10'>

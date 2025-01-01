@@ -40,22 +40,16 @@ const LandingPage = () => {
     >
       
       {/* navigation bar for landing page */}
-              <nav className="fixed top-0 left-0 w-full bg-black bg-opacity-85 flex items-center gap-12 p-4 h-20">
-                <Image src="/logo.png" alt="Logo" width={50} height={50} className="rounded-lg ml-12" />
-                <h1 className="text-2xl font-bold">TaskMaster</h1>
-                <div className="flex-grow flex justify-end gap-8  text-white pr-10">
-                  <a href="/login" className="hover:text-red-600 hover:text-base">
+              <nav className="fixed top-0 left-0 w-full bg-black bg-opacity-85 flex items-center gap-6 sm:gap-12 p-4 h-20">
+                <Image src="/logo.png" alt="Logo" width={50} height={50} className="rounded-lg ml-2 sm:ml-12" />
+                <h1 className="text-xl sm:text-2xl font-bold">TaskMaster</h1>
+                <div className="flex-grow flex justify-end gap-8  text-white pr-5 sm:pr-10">
+                  <a href="/login" className="hover:text-red-600 hover:text-base text-sm sm:text-base">
                   Login
                   </a>
-                  <a href="/signup" className="hover:text-red-600 hover:text-base">
+                  <a href="/signup" className="hover:text-red-600 hover:text-base text-sm sm:text-base">
                   SignUp
                   </a>
-                  {/* <a href="/login" className="hover:text-red-600 hover:text-base">
-                  <Button color="bg-red-400" text="Login"/>
-                  </a>
-                  <a href="/login" className="hover:text-red-600 hover:text-base">
-                  <Button color="bg-red-400" text="SignUp"/>
-                  </a> */}
                 </div>
               </nav>
               

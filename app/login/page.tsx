@@ -33,11 +33,11 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-black">
-            <div className="w-1/4">
-            <Image src="/logo.png" alt="Logo" width={300} height={300} className="rounded-lg ml-12" />
+        <div className="min-h-screen flex flex-col lg:flex-row items-center bg-black">
+            <div className="w-1/2 flex justify-end">
+            <Image src="/logo.png" alt="Logo" width={350} height={350} className="rounded-lg mx-auto xl:mr-10 pb-10" />
             </div>
-            <div className="flex flex-col items-center w-full max-w-lg px-8 py-6 bg-gray-900 text-white rounded-lg">
+            <div className="flex flex-col items-center  xl:ml-10   max-w-lg  w-96 px-8 py-6 bg-gray-900 text-white rounded-lg  mx-auto pb-10 mb-10">
                 <div className="flex flex-col items-center mb-8">
                     <h5 className="text-2xl font-bold">TaskMaster.</h5>
                 </div>
