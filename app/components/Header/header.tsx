@@ -65,9 +65,6 @@ export default function Header() {
             </div>
             </Tooltip>
           </div>
-            <Tooltip title={"Profile"}>
-            <a href="/" className="sm:ml-10 md:ml-30 mr-1 w-5 md:mr-6 ">< PersonRoundedIcon className='bg-neutral-800 rounded-md' sx={{fontSize: { xs: '20px', sm: '25px', md: '30px', lg: '35px' } }}/></a>
-            </Tooltip>
             <Tooltip title={"Change Theme"}>
            <DarkModeToggle />
             </Tooltip>

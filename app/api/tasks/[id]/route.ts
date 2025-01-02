@@ -7,7 +7,6 @@ import mongoose from 'mongoose';
 // GET method
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await dbConnect();
-  console.log("get is consoling")
   // Resolve params to ensure it's properly resolved as a Promise
   const { id } = await params;  // Await the promise to get the `id`
 

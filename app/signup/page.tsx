@@ -21,6 +21,7 @@ const SignUp: React.FC = () => {
                 await signup(email, password);
                 // Redirect or show success message here
                 localStorage.setItem('username',userID);
+                localStorage.setItem("isLoggedIn","true")
                 console.log('Signup successful');
                 router.push("/dashboard");
             } catch (error) {
