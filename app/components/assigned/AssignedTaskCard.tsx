@@ -27,6 +27,7 @@ type Props = {
 }
 
 const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
+    const [username,setUsername] = useState('');
     const [showOptions, setShowOptions] = useState(false);  // To show or hide the edit/delete options
     const [showEditWindow, setShowEditWindow] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
@@ -66,9 +67,18 @@ const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+    
+    useEffect(() => {
+        // Get the userId from localStorage
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+    
     return (
     <>
-    <div className='size-96   rounded-lg gap-2  flex flex-col justify-between bg-slate-300 dark:bg-zinc-800 p-3 border-[4px] border-transparent hover:border-blue-800 dark:hover:border-slate-300'>
+    <div className=' w-80 h-fit low:size-96   rounded-lg gap-2  flex flex-col justify-between bg-slate-300 dark:bg-zinc-800 p-3 border-[4px] border-transparent hover:border-blue-800 dark:hover:border-slate-300'>
         {/* Project icon and title */}
         <div className='flex gap-4 justify-around '>
             {/* icon */}
@@ -131,13 +141,13 @@ const AssignedTaskCard = ({task,onUpdateTask, onDeleteTask}: Props) => {
             <span className='font-mono text-yellow-600 font-bold'>
             Assigned from :
             <span className='text-slate-700 dark:text-slate-200 ml-3' >
-                {task.assignedBy}
+                { username == task.assignedBy ? "you" : task.assignedBy }
                 </span> 
             </span>
             <span className='font-mono text-yellow-600 font-bold'>
             Assigned To :
             <span className='text-slate-700 dark:text-slate-200 ml-3'>
-                {task.assignedTo}
+            { username == task.assignedTo ? "you" : task.assignedTo }
                 </span> 
             </span>
         </div>

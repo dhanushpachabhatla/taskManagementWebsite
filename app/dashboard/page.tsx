@@ -19,6 +19,7 @@ type Task = {
 };
 
 function Dashboard() {
+  const [username,setUsername] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);  // Initialize as empty array
   const [category, setCategory] = useState('');
   const [sortBy, setSortBy] = useState('');
@@ -40,17 +41,14 @@ function Dashboard() {
   useEffect(() => {
     // Get the userId from localStorage
     const storedUid = localStorage.getItem('userId');
-    
     if (storedUid) {
       setUserId(storedUid);
     }
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+        setUsername(storedUsername);
+    }
   }, []);
-  
-  // useEffect(() => {
-  //   if (userId) {
-  //     fetchTasks();
-  //   }
-  // }, [userId]);  // Fetch tasks when userId is set
   
   const fetchTasks = async (assignedPage = false) => {
     const storedUsername = localStorage.getItem('username'); 
@@ -169,6 +167,9 @@ function Dashboard() {
       className="bg-slate-100 dark:bg-neutral-950 w-full min-h-screen flex flex-col custom:flex-row"
     >
       <div className=" flex-grow w-full custom:w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0">
+          <div className='font-bold text-2xl sm:text-4xl mt-3 mb-5 text-slate-800 dark:text-slate-200 '>
+          Hello {username}!
+          </div>
         <div className=" flex justify-between">
           <SearchBar search={setsearchValue} />
           <AddProject onAddTask={handleAddTask} />

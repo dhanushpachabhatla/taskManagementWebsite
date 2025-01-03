@@ -23,23 +23,12 @@ type Task = {
 
 
 function AssignedTaskPage() {
+  const [username,setUsername] = useState('');
     const [tasks, setTasks] = useState<Task[]>([]);  
     const [category, setCategory] = useState('');
     const [sortBy, setSortBy] = useState('');
     const [searchValue, setsearchValue] = useState('');
     const [userId, setUserId] = useState(""); // Get from Firebase Auth
-    
-    // const fetchTasks = async () => {
-    //     const response = await fetch(`/api/tasks?userId=${userId}`);
-    //     const text = await response.text();
-    //     console.log('Response Text:', text);
-    //     if (!response.ok) {
-    //       throw new Error('Failed to fetch tasks');
-    //     }
-      
-    //     const data = JSON.parse(text);
-    //     setTasks(data);
-    //   };
       
       useEffect(() => {
         
@@ -47,6 +36,10 @@ function AssignedTaskPage() {
         
         if (storedUid) {
           setUserId(storedUid);
+        }
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
         }
       }, []);
       
@@ -162,6 +155,9 @@ function AssignedTaskPage() {
   return (
     <div style={{ marginTop: "80px" }} className=' bg-slate-100 dark:bg-neutral-950 w-full min-h-screen flex flex-col custom:flex-row'>
       <div className=' w-full custom:w-[78%] flex flex-col gap-4 p-10 border-r-2 dark:border-r-0'>
+      <div className='font-bold text-2xl sm:text-4xl mt-3 mb-5 text-slate-800 dark:text-slate-200 '>
+          Hello {username}!
+          </div>
         <div className='flex justify-between'>
           <SearchBar search={setsearchValue}/>
           <AssignTaskButton  onAddTask={handleAddTask}/>
